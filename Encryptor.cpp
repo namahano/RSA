@@ -20,8 +20,3 @@ Crypto::CryptoString Crypto::Encryptor::encryptString(string& input)
     }
     return str;
 }
-
-Crypto::CryptoChar Crypto::Encryptor::encryptChar(char c) const
-{
-    return CryptoChar();
-}
