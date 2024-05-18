@@ -22,8 +22,3 @@ string Crypto::Decryptor::decryptString(CryptoString input)
 
     return cypher;
 }
-
-char Crypto::Decryptor::decryptChar(CryptoChar c) const
-{
-    return 0;
-}
