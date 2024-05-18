@@ -19,7 +19,7 @@ namespace Crypto
 
         Decryptor(const PrivateKey* key);
         string decryptString(CryptoString input);
-        char decryptChar(CryptoChar c) const;
+        
     };
 }
 #endif
