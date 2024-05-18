@@ -19,7 +19,7 @@ namespace Crypto
         Encryptor(const PublicKey* key);
 
         CryptoString encryptString(string& input);
-        CryptoChar encryptChar(char c) const;
+        
     };
 }
 #endif
