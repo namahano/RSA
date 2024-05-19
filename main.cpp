@@ -9,15 +9,15 @@ int main()
 	try {
 		int bit;
 		std::string input;
-		std::cout << "¶¬‚·‚é‘f”‚Ìƒrƒbƒg”‚ğ“ü—Í‚µ‚Ä‚­‚¾‚³‚¢: ";
+		std::cout << "ç”Ÿæˆã™ã‚‹ç´ æ•°ã®ãƒ“ãƒƒãƒˆæ•°ã‚’å…¥åŠ›ã—ã¦ãã ã•ã„: ";
 		std::cin >> bit;
 		std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-		std::cout << "•½•¶: ";
+		std::cout << "å¹³æ–‡: ";
 		std::getline(std::cin, input);
 
-		std::cout << "‘f”‚ğ¶¬‚µ‚Ä‚¢‚Ü‚·" << std::endl;
+		std::cout << "ç´ æ•°ã‚’ç”Ÿæˆã—ã¦ã„ã¾ã™" << std::endl;
 		Crypto::RSA rsa(bit);
-		//Crypto::RSA rsa(1951, 1861, 2281);
+		//Crypto::RSA rsa(1951, 1861, 65537);
 		Crypto::Encryptor enc(rsa.getPublicKey());
 		Crypto::Decryptor dec(rsa.getPrivateKey());
 
@@ -26,19 +26,19 @@ int main()
 
 		printf("\n");
 
-		std::cout << "---- ŒöŠJŒ® ----" << std::endl;
-		std::cout << "r = " << rsa.getPublicKey()->r << "\n" << std::endl;
-		std::cout << "m = " << rsa.getPublicKey()->m << "\n" << std::endl;
-		std::cout << "---- ”é–§Œ® ----\n";
-		std::cout << "s = " << rsa.getPrivateKey()->s << "\n" << std::endl;
+		std::cout << "---- å…¬é–‹éµ ----" << std::endl;
+		std::cout << "e = " << rsa.getPublicKey()->e << "\n" << std::endl;
+		std::cout << "n = " << rsa.getPublicKey()->n << "\n" << std::endl;
+		std::cout << "---- ç§˜å¯†éµ ----\n";
+		std::cout << "d = " << rsa.getPrivateKey()->d << "\n" << std::endl;
 		std::cout << "p = " << rsa.getPrivateKey()->p << "\n" << std::endl;
 		std::cout << "q = " << rsa.getPrivateKey()->q << "\n" << std::endl;
 
-		std::cout << "---- ˆÃ†•¶ ---- \n";
+		std::cout << "---- æš—å·æ–‡ ---- \n";
 		for (int i = 0; i < encrypted.size(); i++)
 			std::cout << encrypted[i];
 		printf("\n\n");
-		std::cout << "---- •œ†•¶ ----" << "\n" << decrypted << std::endl;
+		std::cout << "---- å¾©å·æ–‡ ----" << "\n" << decrypted << std::endl;
 
 	}
 	catch (std::exception& e) {
