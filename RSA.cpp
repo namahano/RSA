@@ -7,9 +7,9 @@
 using namespace boost::multiprecision;
 using namespace boost::random;
 
-//ƒeƒXƒg—p
+//ãƒ†ã‚¹ãƒˆç”¨
 Crypto::RSA::RSA(cpp_int p, cpp_int q, cpp_int r)
-	: p(0), q(0), m(0), phi_of_m(0), r(0),
+	: p(0), q(0), n(0), phi(0), e(0),
 	private_key(nullptr),
 	public_key(nullptr)
 {
@@ -24,12 +24,12 @@ Crypto::RSA::RSA(cpp_int p, cpp_int q, cpp_int r)
 }
 
 Crypto::RSA::RSA(int bit)
-	: p(getPrime()), q(getPrime()), m(0), phi_of_m(0), r(0), bit(bit),
+	: p(getPrime()), q(getPrime()), n(0), phi(0), e(0), bit(bit),
 	private_key(nullptr),
 	public_key(nullptr)
 {
 	try {
-		setParameters(p, q, getPrime());
+		setParameters(p, q, 65537);
 		calcKeys();
 	}
 	catch (std::exception& e) {
@@ -48,22 +48,22 @@ const Crypto::PrivateKey* Crypto::RSA::getPrivateKey() const
 	return private_key;
 }
 
-void Crypto::RSA::setParameters(cpp_int p, cpp_int q, cpp_int r)
+void Crypto::RSA::setParameters(cpp_int p, cpp_int q, cpp_int e)
 {
 	Euclidean euc;
 	this->p = p;
 	this->q = q;
-	this->r = r;
-	this->m = p * q;
-	this->phi_of_m = calcPhi(p, q);
+	this->e = e;
+	this->n = p * q;
+	this->phi = calcPhi(p, q);
 
 	if (!isPrime(p) || !isPrime(q))
 	{
-		throw std::exception("[ERROR] p ‚Ü‚½‚Í q ‚Í‘f”‚Å‚Í‚ ‚è‚Ü‚¹‚ñ");
+		throw std::exception("[ERROR] p ã¾ãŸã¯ q ã¯ç´ æ•°ã§ã¯ã‚ã‚Šã¾ã›ã‚“");
 	}
-	else if ((r < m) && (r > 1) && (euc.euclidean(r, phi_of_m) != 1))
+	else if ((e < n) && (e > 1) && (euc.euclidean(e, phi) != 1))
 	{
-		throw std::exception("[ERROR] r ‚ª p * q (=> m) ˆÈ‰º‚Å‚Í‚È‚¢‚©Ar ‚Æ m ‚Ì phi ‚ªŒİ‚¢‚É‘f‚Å‚Í‚ ‚è‚Ü‚¹‚ñ");
+		throw std::exception("[ERROR] e ãŒ p * q (=> m) ä»¥ä¸‹ã§ã¯ãªã„ã‹ã€e ã¨ m ã® phi ãŒäº’ã„ã«ç´ ã§ã¯ã‚ã‚Šã¾ã›ã‚“");
 	}
 
 }
@@ -71,29 +71,29 @@ void Crypto::RSA::setParameters(cpp_int p, cpp_int q, cpp_int r)
 void Crypto::RSA::calcPrivateKey()
 {
 	Euclidean euc;
-	cpp_int a = this->phi_of_m;
-	cpp_int b = this->r;
+	cpp_int a = this->phi;
+	cpp_int b = this->e;
 
 	cpp_int s = 0;
 	cpp_int x = 0;
 
 	euc.extendedEuclidean(a, b, &x, &s);
 
-	s = s < 0 ? makePositive(s, this->phi_of_m) : s;
+	s = s < 0 ? makePositive(s, this->phi) : s;
 
 	this->private_key = new PrivateKey{ s, this->p, this->q };
 }
 
 void Crypto::RSA::calcPublicKey()
 {
-	this->public_key = new PublicKey{ this->r, this->m };
+	this->public_key = new PublicKey{ this->e, this->n };
 }
 
 void Crypto::RSA::calcKeys()
 {
 	if (private_key != nullptr || public_key != nullptr)
 	{
-		throw std::exception("[ERROR] ‚·‚Å‚ÉŒvZ‚³‚ê‚Ä‚¢‚Ü‚·B");
+		throw std::exception("[ERROR] ã™ã§ã«è¨ˆç®—ã•ã‚Œã¦ã„ã¾ã™ã€‚");
 	}
 
 	calcPublicKey();
