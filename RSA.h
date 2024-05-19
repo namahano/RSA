@@ -15,14 +15,14 @@ using namespace boost::random;
 namespace Crypto {
 
 	typedef struct {
-		cpp_int s;
+		cpp_int d;
 		cpp_int p;
 		cpp_int q;
 	} PrivateKey;
 
 	typedef struct {
-		cpp_int r;
-		cpp_int m;
+		cpp_int e;
+		cpp_int n;
 	} PublicKey;
 
 	typedef std::vector<cpp_int> CryptoString;
@@ -30,8 +30,8 @@ namespace Crypto {
 
 	class RSA {
 	public:
-		//テスト用
-		RSA(cpp_int p, cpp_int q, cpp_int r);
+		//繝�繧ｹ繝育畑
+		RSA(cpp_int p, cpp_int q, cpp_int e);
 		RSA(int bit);
 
 		const PublicKey* getPublicKey() const;
@@ -50,17 +50,17 @@ namespace Crypto {
 
 		cpp_int calcPhi(cpp_int a, cpp_int b);
 		bool isPrime(cpp_int num);
-		void setParameters(cpp_int p, cpp_int q, cpp_int r);
+		void setParameters(cpp_int p, cpp_int q, cpp_int e);
 
 		int bit;
 		mt19937 gen;
 
 		cpp_int p;
 		cpp_int q;
-		cpp_int phi_of_m;
+		cpp_int phi;
 
-		cpp_int m;
-		cpp_int r;
+		cpp_int n;
+		cpp_int e;
 
 		PrivateKey* private_key;
 		PublicKey* public_key;
